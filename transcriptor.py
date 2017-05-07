@@ -4,7 +4,7 @@ import re
 import os
 from docx import Document
 
-def add_transcript_to_document(path, doc):
+def addTranscriptToDocument(path, doc):
     f = open(path, 'r')
     o = io.StringIO()
 
@@ -29,7 +29,15 @@ def add_transcript_to_document(path, doc):
     doc.add_paragraph(o.getvalue())
     o.close()
 
-d = Document()
-add_transcript_to_document(sys.argv[1], d)
-d.save('foo.docx')
+def docxifyTheSubdir(path):
+    d = Document()
+    for transcript in os.listdir(path):
+        addTranscriptToDocument(os.path.join(path, transcript), d)
+    d.save(os.path.basename(path) + '.docx')
+
+def startWithTheRootDir(root):
+    for subdir in os.listdir(root):
+        docxifyTheSubdir(os.path.join(root, subdir))
+
+startWithTheRootDir(sys.argv[1])
 
