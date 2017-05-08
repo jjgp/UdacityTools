@@ -32,12 +32,14 @@ def addTranscriptToDocument(path, doc):
 def docxifyTheSubdir(path):
     d = Document()
     for transcript in os.listdir(path):
-        addTranscriptToDocument(os.path.join(path, transcript), d)
+        if transcript.endswith('.srt'):
+            addTranscriptToDocument(os.path.join(path, transcript), d)
     d.save(os.path.basename(path) + '.docx')
 
 def startWithTheRootDir(root):
     for subdir in os.listdir(root):
-        docxifyTheSubdir(os.path.join(root, subdir))
+        if not subdir == ".DS_Store":
+            docxifyTheSubdir(os.path.join(root, subdir))
 
 startWithTheRootDir(sys.argv[1])
 
