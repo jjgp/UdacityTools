@@ -12,8 +12,8 @@ def addTranscriptToDocument(path, doc):
     header += '\n\n'
     o.write(header.decode('utf-8'))
 
-    section = re.compile('^[0-9]+$')
-    timestamp = re.compile('^[0-9:,]+\\s-->\\s[0-9:,]+$')
+    section = re.compile('^[0-9]+(\\s?)+$')
+    timestamp = re.compile('^[0-9:,]+\\s-->\\s[0-9:,]+(\\s?)+$')
     whitespace = re.compile('\\s+')
     for line in iter(f.readline, ''):
         if not section.match(line) and \
