@@ -4,6 +4,7 @@ import re
 import os
 from docx import Document
 
+
 def addTranscriptToDocument(path, doc):
     f = open(path, 'r')
     o = io.StringIO()
@@ -29,17 +30,24 @@ def addTranscriptToDocument(path, doc):
     doc.add_paragraph(o.getvalue())
     o.close()
 
+
 def docxifyTheSubdir(path):
     d = Document()
-    for transcript in os.listdir(path):
+    number = lambda x: int(re.search('(^[0-9]+)', x).group(0))
+    transcripts = os.listdir(path)
+    transcripts = sorted(transcripts, key=number)
+
+    for transcript in transcripts:
         if transcript.endswith('.srt'):
             addTranscriptToDocument(os.path.join(path, transcript), d)
     d.save(os.path.basename(path) + '.docx')
+
 
 def startWithTheRootDir(root):
     for subdir in os.listdir(root):
         if not subdir == ".DS_Store":
             docxifyTheSubdir(os.path.join(root, subdir))
+
 
 startWithTheRootDir(sys.argv[1])
 
