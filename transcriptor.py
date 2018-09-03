@@ -20,6 +20,7 @@ def addTranscriptToDocument(path, doc):
         if not section.match(line) and \
                 not timestamp.match(line) and \
                 not whitespace.match(line):
+                    line = line.replace("&gt;", ">")
                     line = line.strip()
                     line += ' '
                     o.write(line.decode('utf-8'))
